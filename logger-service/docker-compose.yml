@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   logger:
-    container_name: saba
+    container_name: logger
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -16,8 +16,8 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
-      - sabanats
+      - testnet
 
 networks:
-  sabanats:
+  testnet:
     external: true

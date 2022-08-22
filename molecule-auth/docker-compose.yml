@@ -3,7 +3,7 @@ version: "3.3"
 services:
 
   api:
-    container_name: saba
+    container_name: moleculer-api
     build:
       context: .
     image: molecule-auth
@@ -18,9 +18,10 @@ services:
       - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
       - "traefik.http.services.api-gw.loadbalancer.server.port=3000"
     networks:
-      - sabanats
+      - testnet
 
   authorization:
+    container_name: moleculer-authorization
     build:
       context: .
     image: molecule-authorization
@@ -28,9 +29,10 @@ services:
     environment:
       SERVICES: authorization
     networks:
-      - sabanats
+      - testnet
 
   auth:
+    container_name: moleculer-auth
     build:
       context: .
     image: molecule-auth
@@ -38,7 +40,7 @@ services:
     environment:
       SERVICES: login
     networks:
-      - sabanats
+      - testnet
 
 
   traefik:
@@ -53,11 +55,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - sabanats
+      - testnet
       - default
 
 networks:
-  sabanats:
+  testnet:
   internal:
 
 volumes:
