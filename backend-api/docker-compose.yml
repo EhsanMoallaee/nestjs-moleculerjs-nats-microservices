@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  backend:
+    container_name: saba-backend
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    command: npm run start:dev
+    # environment:
+    #   NATS_URL: nats://nats:4222
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb
+      - nats
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4000:4000
+    networks:
+      - sabanats
+
+  mongodb:
+    container_name: saba-mongodb
+    image: mongo:5.0.0
+    volumes:
+      - 'mongodb-data:/data/db'
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - sabanats
+
+  nats:
+    
+    entrypoint: '/nats-server -c nats-server.conf -DV'
+    command: -c nats-server.conf -DV
+    image: nats
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
+    networks:
+      - sabanats
+
+volumes:
+  mongodb-data:
+
+networks:
+  sabanats:
+    external: true

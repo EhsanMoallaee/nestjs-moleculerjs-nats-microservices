@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  logger:
+    container_name: saba
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    command: npm run start:dev
+    environment:
+      NATS_URL: nats://nats:4222
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - sabanats
+
+networks:
+  sabanats:
+    external: true
