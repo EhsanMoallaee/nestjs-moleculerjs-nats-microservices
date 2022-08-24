@@ -1,9 +1,11 @@
 import { Body, Controller, Get, HttpCode, Post, HttpStatus, Response, Headers, UseGuards, SetMetadata } from '@nestjs/common';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { Response as Res } from 'express';
 import { CustomGuard } from '../customGuard/auth.guard';
 import { RegisterDto, LoginDto } from './dto';
 import { UserService } from './user.service';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -23,6 +25,11 @@ export class UserController {
     return res.set({ 'x-access-token': result.token }).json(result.fullname);
   }
 
+  // Just for own tests
+  @ApiHeader({
+    name: 'x-access-token',
+    description: 'Auth token',
+  })
   @Post('verify')
   async verify(
     @Body() userData,
@@ -33,6 +40,7 @@ export class UserController {
     return res.set({ 'x-access-token': result.token }).json(result.message);
   }
 
+  // Just for own tests
   @Post('verifyguard')
   @SetMetadata('roles','admin')
   @UseGuards(CustomGuard)
@@ -40,7 +48,5 @@ export class UserController {
   ) { 
     return {message: 'hi g'};
   }
-
-
 
 }

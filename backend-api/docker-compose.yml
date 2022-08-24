@@ -8,8 +8,8 @@ services:
       dockerfile: ./Dockerfile
       target: development
     command: npm run start:dev
-    environment:
-      NATS_URL: nats://nats:4222
+    # environment:
+    #   NATS_URL: nats://nats:4222
     env_file:
       - ./.env
     depends_on:
@@ -40,7 +40,7 @@ services:
       - testnet
 
   nats:
-    
+    # container_name: nats
     entrypoint: '/nats-server -c nats-server.conf -DV'
     command: -c nats-server.conf -DV
     image: nats

@@ -3,6 +3,7 @@ import { NatsOptions, Transport } from '@nestjs/microservices';
 export const natsConfig: NatsOptions = {
   transport: Transport.NATS,
   options: {
-    url: process.env.NATS_URL || 'nats://nats:4222',
+    servers: [process.env.NATS_URL] 
+    // || 'nats://127.0.0.1:4222',
   },
 };

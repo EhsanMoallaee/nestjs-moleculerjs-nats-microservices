@@ -53,7 +53,7 @@ export class UserService {
     this.client.emit('user_logged_in' , new LoginUserEvent(user._id, user.email, user.fullname));
 
     const authData: AuthDto = {_id: user._id, email: user.email, fullname: user.fullname, role: user.role};
-    const result = await this.httpService.axiosRef.post('http://localhost:3000/api/auth/login', authData);
+    const result = await this.httpService.axiosRef.post('http://moleculer-api:3000/api/auth/login', authData);
     
     const data = {
       token: result.data,
@@ -64,10 +64,10 @@ export class UserService {
 
   async verify(userData, token) {
     const data = {
-      role: 'admin',
+      role: 'user',
       token
     }
-    const result = await this.httpService.axiosRef.post('http://localhost:3000/api/authorization/verifyToken', data);
+    const result = await this.httpService.axiosRef.post('http://moleculer-api:3000/api/authorization/verifyToken', data);
     this.client.emit('user_verified' , {user: result.data.payload, message: result.data.message});
     return result.data
   }

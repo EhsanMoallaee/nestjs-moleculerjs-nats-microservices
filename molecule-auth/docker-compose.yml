@@ -11,8 +11,6 @@ services:
     environment:
       SERVICES: api
       PORT: 3000
-    depends_on:
-      - nats
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
@@ -60,7 +58,7 @@ services:
 
 networks:
   testnet:
-  internal:
+    external: true
 
 volumes:
   data:

@@ -9,7 +9,7 @@ async function bootstrap() {
     {
       transport: Transport.NATS,
       options: {
-        url: process.env.NATS_URL || 'nats://nats:4222',
+        servers:[ process.env.NATS_URL || 'nats://nats:4222',]
       },
     }
   )

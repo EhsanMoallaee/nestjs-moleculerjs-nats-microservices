@@ -21,6 +21,7 @@ export class CustomGuard implements CanActivate {
 
         const request = context.switchToHttp().getRequest();
         var token = request.header('x-access-token');
+        
         const role = requireRoles
         const verificationResult = this.verify(role, token);
         return verificationResult;
@@ -31,7 +32,7 @@ export class CustomGuard implements CanActivate {
       role,
       token
     }
-    const result = await this.httpService.axiosRef.post('http://localhost:3000/api/authorization/verifyToken', data);
+    const result = await this.httpService.axiosRef.post('http://moleculer-api:3000/api/authorization/verifyToken', data);
     this.client.emit('user_verified' , {user: result.data.payload, message: result.data.message});
     if(result.data.message === 'Authentication failed') {
         return false;
